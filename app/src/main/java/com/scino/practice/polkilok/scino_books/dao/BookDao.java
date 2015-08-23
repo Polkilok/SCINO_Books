@@ -18,70 +18,102 @@ import com.scino.practice.polkilok.scino_books.model.Book;
  */
 public class BookDao {
 
-    private SQLiteDatabase mDatabase;
-    private SCSQLiteHelper mHelper;
+	private SQLiteDatabase mDatabase;
+	private SCSQLiteHelper mHelper;
 
-    public BookDao(Context context) {
-        mHelper = new SCSQLiteHelper(context);
-    }
+	public BookDao(Context context) {
+		mHelper = new SCSQLiteHelper(context);
+	}
 
-    public void open() throws SQLException {
-        mDatabase = mHelper.getWritableDatabase();
-    }
+	public void open() throws SQLException {
+		mDatabase = mHelper.getWritableDatabase();
+	}
 
-    public void close() {
-        mHelper.close();
-    }
+	public void close() {
+		mHelper.close();
+	}
 
-    public Book createBook(String name) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(BookTable.COLUMN_NAME, name);
-        long bookId = mDatabase.insert(BookTable.TABLE_BOOK, null, contentValues);
+	public void createBook(Book obj) {
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(BookTable.COLUMN_TITLE, obj.getTitle());
+		contentValues.put(BookTable.COLUMN_AUTHOR, obj.getAuthor());
+		contentValues.put(BookTable.COLUMN_CATEGORY_PTR, obj.getCategory());
 
-        Cursor cursor = mDatabase.query(BookTable.TABLE_BOOK,
-                new String[]{BookTable.COLUMN_ID, BookTable.COLUMN_NAME},
-                BookTable.COLUMN_ID + " = ?",
-                new String[]{String.valueOf(bookId)}, null, null, null);
-        cursor.moveToFirst();
-        Book book = cursorToBook(cursor);
-        cursor.close();
+		long bookId = mDatabase.insert(BookTable.TABLE_BOOK, null, contentValues);
 
-        return book;
-    }
+		//Cursor cursor = mDatabase.query(BookTable.TABLE_BOOK,
+		//new String[]{BookTable.COLUMN_BOOK_ID, BookTable.COLUMN_TITLE},
+		//BookTable.COLUMN_BOOK_ID + " = ?",
+		//new String[]{String.valueOf(bookId)}, null, null, null);
+		//cursor.moveToFirst();
+		//Book book = cursorToBook(cursor);
+		//cursor.close();
 
-    public void deleteBookById(long id) {
-        mDatabase.delete(BookTable.TABLE_BOOK, BookTable.COLUMN_ID + " = " + id, null);
-    }
+		//return book;
+		//return obj;
+	}
 
-    public List<Book> getAllBooks() {
-        List<Book> books = new ArrayList<>();
+	public void createCategory(String name) {
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(BookTable.COLUMN_CATEGORY, name);
+		long bookId = mDatabase.insert(BookTable.TABLE_CATEGORY, null, contentValues);
+	}
 
-        Cursor cursor = mDatabase.query(BookTable.TABLE_BOOK,
-                new String[]{BookTable.COLUMN_ID, BookTable.COLUMN_NAME}, null, null, null, null, null);
+	public void deleteBookById(long id) {
+		mDatabase.delete(BookTable.TABLE_BOOK, BookTable.COLUMN_BOOK_ID + " = " + id, null);
+	}
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Book book = cursorToBook(cursor);
-            books.add(book);
-            cursor.moveToNext();
-        }
+	public List<Book> getAllBooks() {
+		List<Book> books = new ArrayList<>();
 
-        cursor.close();
+		Cursor cursor = mDatabase.query(BookTable.TABLE_BOOK,
+		new String[]{BookTable.COLUMN_BOOK_ID, BookTable.COLUMN_TITLE, BookTable.COLUMN_AUTHOR, BookTable.COLUMN_CATEGORY_PTR},
+		null, null, null, null, null);
 
-        return books;
-    }
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Book book = cursorToBook(cursor);
+			books.add(book);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return books;
+	}
 
-    public Cursor getAllBooksCursor() {
-        return mDatabase.query(BookTable.TABLE_BOOK,
-                new String[]{BookTable.COLUMN_ID, BookTable.COLUMN_NAME}, null, null, null, null, null);
+	public List<String> getNamesLists() {
+		List<String> ListsNames = new ArrayList<>();
 
-    }
+		Cursor cursor = mDatabase.query(BookTable.TABLE_CATEGORY,
+		new String[]{BookTable.COLUMN_CATEGORY_ID, BookTable.COLUMN_CATEGORY},
+		null, null, null, null, null);
 
-    private Book cursorToBook(Cursor cursor) {
-        Book book = new Book();
-        book.setId(cursor.getLong(cursor.getColumnIndex(BookTable.COLUMN_ID)));
-        book.setName(cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_NAME)));
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			ListsNames.add(cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_CATEGORY)));
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return ListsNames;
+	}
 
-        return book;
-    }
+	public Cursor getAllBooksCursor() {
+		return mDatabase.query(BookTable.TABLE_BOOK,
+		new String[]{BookTable.COLUMN_BOOK_ID, BookTable.COLUMN_TITLE}, null, null, null, null, null);
+
+	}
+
+	public Cursor getCursorOnCategory(String Category_name) {
+		final String query = "select * from " + BookTable.TABLE_CATEGORY + " where " + BookTable.COLUMN_CATEGORY + " like '" + Category_name + "';";
+		return mDatabase.rawQuery(query, null);
+	}
+
+	private Book cursorToBook(Cursor cursor) {
+		Book book = new Book();
+		book.setId(cursor.getLong(cursor.getColumnIndex(BookTable.COLUMN_BOOK_ID)));
+		book.setTitle(cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_TITLE)));
+		book.setAuthor(cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_AUTHOR)));
+		book.setCategory(cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_CATEGORY_PTR)));
+
+		return book;
+	}
 }

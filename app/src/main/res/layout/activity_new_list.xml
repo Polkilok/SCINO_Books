@@ -33,5 +33,5 @@
         android:layout_height="@dimen/BTheight"
         android:text="@string/BTsave"
         android:id="@+id/BTsave"
-            />
+        android:onClick="onClick_save_new_list"/>
 </LinearLayout>

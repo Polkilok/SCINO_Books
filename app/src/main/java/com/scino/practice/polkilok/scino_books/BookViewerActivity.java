@@ -1,19 +1,45 @@
 package com.scino.practice.polkilok.scino_books;
 
+import android.app.LoaderManager;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.scino.practice.polkilok.scino_books.adapters.BookAdapter;
+import com.scino.practice.polkilok.scino_books.dao.BookDao;
+import com.scino.practice.polkilok.scino_books.model.Book;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by эмсиай on 11.08.2015.
  */
-public class BookViewerActivity extends AppCompatActivity {
+public class BookViewerActivity extends AppCompatActivity{
+
+	public static final int BOOK_LOADER_ID = 1;
+	private ListView mListView;
+	private ArrayAdapter<Book> mAdapter;
+
+	private BookDao mBookDao;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_book_viewer);
+
+		mBookDao = new BookDao(this);
+		mBookDao.open();
+
+		mListView = (ListView) findViewById(R.id.book_list);
+		mAdapter = new ArrayAdapter<Book>(this, android.R.layout.simple_list_item_1, mBookDao.getAllBooks());
+		mListView.setAdapter(mAdapter);
 	}
 
 	@Override
@@ -37,5 +63,4 @@ public class BookViewerActivity extends AppCompatActivity {
 
 		return super.onOptionsItemSelected(item);
 	}
-
 }

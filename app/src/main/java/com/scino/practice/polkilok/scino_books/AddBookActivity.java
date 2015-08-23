@@ -6,17 +6,44 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+
+import com.scino.practice.polkilok.scino_books.dao.BookDao;
 
 /**
  * Created by эмсиай on 11.08.2015.
  */
 public class AddBookActivity extends AppCompatActivity {
 
+	//private Button mSave;
+	private EditText mAuthor;
+	private EditText mTitle;
+	private Spinner mSpinner;
+	private BookDao mBookDao;
+	private ArrayAdapter<String> mAdapter;
+	public static final String AUTHOR = "com.scino.practice.polkilok.scino_books.Author";
+	public static final String TITLE = "com.scino.practice.polkilok.scino_books.Title";
+	public static final String CATEGORY= "com.scino.practice.polkilok.scino_books.Category";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_add_book);
+
+		mBookDao = new BookDao(this);
+		mBookDao.open();
+		//mSave = (Button) findViewById(R.id.BTsave);
+		mAuthor = (EditText) findViewById(R.id.editText_author);
+		mTitle = (EditText) findViewById(R.id.editText_title);
+
+		mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mBookDao.getNamesLists());
+		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		//mSpinner.setPrompt("Категория");
+		mSpinner = (Spinner) findViewById(R.id.spinner_category);
+		mSpinner.setAdapter(mAdapter);
 	}
 
 	@Override
@@ -41,4 +68,14 @@ public class AddBookActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	public void onClick_save(View view) {
+
+		Intent buf = new Intent();
+		buf.putExtra(AddBookActivity.AUTHOR, mAuthor.getText().toString());
+		buf.putExtra(AddBookActivity.TITLE, mTitle.getText().toString());
+		buf.putExtra(AddBookActivity.CATEGORY, mSpinner.getSelectedItem().toString());
+
+		setResult(RESULT_OK, buf);
+		finish();
+	}
 }

@@ -28,8 +28,10 @@ public class BookAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         TextView bookName = (TextView) view.findViewById(android.R.id.text1);
 
-        String name = cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_NAME));
-
-        bookName.setText(name);
+        String title = cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_TITLE));
+        //String author = cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_AUTHOR));
+        //String category = cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_CATEGORY_PTR));
+        //bookName.setText(title + ' ' + author);
+		bookName.setText(title);
     }
 }

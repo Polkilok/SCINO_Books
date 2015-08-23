@@ -1,19 +1,26 @@
 package com.scino.practice.polkilok.scino_books;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 /**
  * Created by эмсиай on 11.08.2015.
  */
 public class NewListActivity extends AppCompatActivity {
 
+	public static final String LIST_NAME = "com.scino.practice.polkilok.scino_books.list_name";
+	private EditText mName;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_list);
+		mName = (EditText) findViewById(R.id.EDTtitle_list);
 	}
 
 	@Override
@@ -36,6 +43,13 @@ public class NewListActivity extends AppCompatActivity {
 		}
 
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void onClick_save_new_list(View view) {
+		Intent buf = new Intent();
+		buf.putExtra(NewListActivity.LIST_NAME, mName.getText().toString());
+		setResult(RESULT_OK, buf);
+		finish();
 	}
 
 }
