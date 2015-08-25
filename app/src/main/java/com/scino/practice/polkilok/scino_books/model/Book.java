@@ -9,14 +9,21 @@ public class Book {
 	private String title;
 	private String author;
 	private String category;
+	private boolean read;
+	private final char space = '\n';
+
+	public Book()
+	{
+		read = false;
+	}
 
 	@Override
 	public String toString() {
-		String answer = title + ' ' + author;
+		String answer = title + space + author;
 		if (category == null)
 			return answer;
 		else
-			return answer + ' ' + category;
+			return answer + space + category;
 	}
 
 	public long getId() {
@@ -49,5 +56,13 @@ public class Book {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public boolean isRead() {
+		return read;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
 	}
 }

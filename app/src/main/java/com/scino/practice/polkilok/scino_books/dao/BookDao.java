@@ -18,6 +18,8 @@ import com.scino.practice.polkilok.scino_books.model.Book;
  */
 public class BookDao {
 
+	private final short FALSE = 0;
+	private final short TRUE = 1;
 	private SQLiteDatabase mDatabase;
 	private SCSQLiteHelper mHelper;
 
@@ -38,7 +40,10 @@ public class BookDao {
 		contentValues.put(BookTable.COLUMN_TITLE, obj.getTitle());
 		contentValues.put(BookTable.COLUMN_AUTHOR, obj.getAuthor());
 		contentValues.put(BookTable.COLUMN_CATEGORY_PTR, obj.getCategory());
-
+		if (obj.isRead())
+			contentValues.put(BookTable.COLUMN_WAS_READ, TRUE);
+		else
+			contentValues.put(BookTable.COLUMN_WAS_READ, FALSE);
 		long bookId = mDatabase.insert(BookTable.TABLE_BOOK, null, contentValues);
 
 		//Cursor cursor = mDatabase.query(BookTable.TABLE_BOOK,
@@ -66,9 +71,10 @@ public class BookDao {
 	public List<Book> getAllBooks() {
 		List<Book> books = new ArrayList<>();
 
-		Cursor cursor = mDatabase.query(BookTable.TABLE_BOOK,
+		Cursor cursor = mDatabase.rawQuery("select * from " + BookTable.TABLE_BOOK, null);
+		/*Cursor cursor = mDatabase.query(BookTable.TABLE_BOOK,
 		new String[]{BookTable.COLUMN_BOOK_ID, BookTable.COLUMN_TITLE, BookTable.COLUMN_AUTHOR, BookTable.COLUMN_CATEGORY_PTR},
-		null, null, null, null, null);
+		null, null, null, null, null);*/
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -102,9 +108,33 @@ public class BookDao {
 
 	}
 
-	public Cursor getCursorOnCategory(String Category_name) {
-		final String query = "select * from " + BookTable.TABLE_CATEGORY + " where " + BookTable.COLUMN_CATEGORY + " like '" + Category_name + "';";
-		return mDatabase.rawQuery(query, null);
+	public List<Book> getCategoryList(String Category_name) {
+		final String query = "select * from " + BookTable.TABLE_BOOK + " where " + BookTable.COLUMN_CATEGORY_PTR + " like '" + Category_name + "';";
+		List<Book> ListBooks = new ArrayList<>();
+
+		Cursor cursor = mDatabase.rawQuery(query, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			ListBooks.add(cursorToBook(cursor));
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return ListBooks;
+	}
+	public List<Book> getUncategoryList() {
+		final String query = "select * from " + BookTable.TABLE_BOOK + " where " + BookTable.COLUMN_CATEGORY_PTR + " is null;";
+		List<Book> ListBooks = new ArrayList<>();
+
+		Cursor cursor = mDatabase.rawQuery(query, null);
+
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			ListBooks.add(cursorToBook(cursor));
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return ListBooks;
 	}
 
 	private Book cursorToBook(Cursor cursor) {
@@ -113,7 +143,7 @@ public class BookDao {
 		book.setTitle(cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_TITLE)));
 		book.setAuthor(cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_AUTHOR)));
 		book.setCategory(cursor.getString(cursor.getColumnIndex(BookTable.COLUMN_CATEGORY_PTR)));
-
+		book.setRead(cursor.getShort(cursor.getColumnIndex(BookTable.COLUMN_WAS_READ)) == TRUE);
 		return book;
 	}
 }

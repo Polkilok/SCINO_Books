@@ -14,6 +14,9 @@ import android.widget.Spinner;
 
 import com.scino.practice.polkilok.scino_books.dao.BookDao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by эмсиай on 11.08.2015.
  */
@@ -27,7 +30,8 @@ public class AddBookActivity extends AppCompatActivity {
 	private ArrayAdapter<String> mAdapter;
 	public static final String AUTHOR = "com.scino.practice.polkilok.scino_books.Author";
 	public static final String TITLE = "com.scino.practice.polkilok.scino_books.Title";
-	public static final String CATEGORY= "com.scino.practice.polkilok.scino_books.Category";
+	public static final String CATEGORY = "com.scino.practice.polkilok.scino_books.Category";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,10 +42,12 @@ public class AddBookActivity extends AppCompatActivity {
 		//mSave = (Button) findViewById(R.id.BTsave);
 		mAuthor = (EditText) findViewById(R.id.editText_author);
 		mTitle = (EditText) findViewById(R.id.editText_title);
-
-		mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mBookDao.getNamesLists());
+		List<String> list = new ArrayList<>();
+		list.add(getString(R.string.uncategory));
+		list.addAll(mBookDao.getNamesLists());
+		mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
 		mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		//mSpinner.setPrompt("Категория");
+
 		mSpinner = (Spinner) findViewById(R.id.spinner_category);
 		mSpinner.setAdapter(mAdapter);
 	}
@@ -69,13 +75,19 @@ public class AddBookActivity extends AppCompatActivity {
 	}
 
 	public void onClick_save(View view) {
+		String author = mAuthor.getText().toString();
+		String title = mTitle.getText().toString();
+		if (!author.isEmpty() && !title.isEmpty()) {
+			Intent buf = new Intent();
+			buf.putExtra(AddBookActivity.AUTHOR, author);
+			buf.putExtra(AddBookActivity.TITLE, title);
+			if (mSpinner.getSelectedItemPosition() != 0)
+				buf.putExtra(AddBookActivity.CATEGORY, mSpinner.getSelectedItem().toString());
+			setResult(RESULT_OK, buf);
+			finish();
+		} else {
+			//TODO Сделать вывод предупреждения о некорректности ввода
+		}
 
-		Intent buf = new Intent();
-		buf.putExtra(AddBookActivity.AUTHOR, mAuthor.getText().toString());
-		buf.putExtra(AddBookActivity.TITLE, mTitle.getText().toString());
-		buf.putExtra(AddBookActivity.CATEGORY, mSpinner.getSelectedItem().toString());
-
-		setResult(RESULT_OK, buf);
-		finish();
 	}
 }
