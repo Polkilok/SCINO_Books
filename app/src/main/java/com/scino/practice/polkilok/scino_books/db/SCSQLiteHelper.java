@@ -4,13 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by Name on 10/08/15.
- */
 public class SCSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "scino_book.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 14;
 
     public SCSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

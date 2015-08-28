@@ -18,13 +18,15 @@
 	<Spinner
 			android:id="@+id/spinner_category_filter"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="@dimen/Spinner_height"
 			android:layout_gravity="center_horizontal"
-			android:spinnerMode="dropdown"/>
+			android:spinnerMode="dialog"
+			android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 	<ListView
+			android:id="@+id/book_list"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:id="@+id/book_list"/>
+			android:choiceMode="singleChoice"/>
 
 </LinearLayout>

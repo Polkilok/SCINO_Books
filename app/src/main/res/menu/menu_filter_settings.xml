@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:context=".MainActivity">
+	<item
+			android:id="@+id/filter_is_read"
+			android:title="@string/filter_is_read"/>
+	<item
+			android:id="@+id/filter_is_no_read"
+			android:title="@string/filter_is_no_read"/>
+	<item
+			android:id="@+id/filter_read_default"
+			android:title="@string/filter_read_default"/>
+	<item
+			android:id="@+id/filter_sort_by_title"
+			android:title="@string/filter_sort_by_title"/>
+	<item
+			android:id="@+id/filter_sort_by_author"
+			android:title="@string/filter_sort_by_author"/>
+
+	<item
+			android:id="@+id/filter_no_sort"
+			android:title="@string/filter_no_sort"/>
+	<item
+			android:id="@+id/filter_search"
+			android:title="@string/filter_search"/>
+</menu>

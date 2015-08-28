@@ -8,12 +8,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-/**
- * Created by эмсиай on 11.08.2015.
- */
+import com.scino.practice.polkilok.scino_books.model.Category;
+
 public class NewListActivity extends AppCompatActivity {
 
 	public static final String LIST_NAME = "com.scino.practice.polkilok.scino_books.list_name";
+	public static final String LIST_ID = "com.scino.practice.polkilok.scino_books.list_id";
 	private EditText mName;
 
 	@Override
@@ -21,6 +21,7 @@ public class NewListActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_list);
 		mName = (EditText) findViewById(R.id.EDTtitle_list);
+		mName.setText(getIntent().getStringExtra(LIST_NAME));
 	}
 
 	@Override
@@ -48,6 +49,7 @@ public class NewListActivity extends AppCompatActivity {
 	public void onClick_save_new_list(View view) {
 		Intent buf = new Intent();
 		buf.putExtra(NewListActivity.LIST_NAME, mName.getText().toString());
+		buf.putExtra(NewListActivity.LIST_ID, getIntent().getLongExtra(NewListActivity.LIST_ID, Category.AUTO_ID));
 		setResult(RESULT_OK, buf);
 		finish();
 	}

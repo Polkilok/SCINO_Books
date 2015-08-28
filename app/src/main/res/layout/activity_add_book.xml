@@ -14,54 +14,55 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
-			android:text="@string/activity_add_book"
-			android:layout_weight="0"/>
+			android:layout_weight="0"
+			android:text="@string/activity_add_book"/>
 
 	<TextView
 			android:id="@+id/text_add_Title"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_weight="0"
 			android:text="@string/EDTtitle"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_weight="0"/>
+			android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 	<EditText
 			android:id="@+id/editText_title"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:inputType="text"
-			android:layout_weight="0"/>
+			android:layout_weight="0"
+			android:inputType="text"/>
 
 	<TextView
 			android:id="@+id/text_author"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_weight="0"
 			android:text="@string/EDTauthor"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_weight="0"/>
+			android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 	<EditText
 			android:id="@+id/editText_author"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:inputType="text"
-			android:layout_weight="0"/>
+			android:layout_weight="0"
+			android:inputType="text"/>
 
 	<Spinner
 			android:id="@+id/spinner_category"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="@dimen/BTheight"
 			android:layout_gravity="center_horizontal"
+			android:layout_weight="0"
 			android:spinnerMode="dropdown"
-			android:layout_weight="0"/>
+			android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 	<Button
 			android:id="@+id/BTconfirm"
 			android:layout_width="@dimen/BTwidth"
-			android:layout_height="@dimen/BTheight"
+			android:layout_height="@dimen/Spinner_height"
 			android:layout_gravity="center_horizontal"
-			android:text="@string/BTsave"
 			android:layout_weight="0"
-			android:onClick="onClick_save"/>
+			android:onClick="onClick_save"
+			android:text="@string/BTsave"/>
 
 </LinearLayout>

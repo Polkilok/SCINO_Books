@@ -1,16 +1,13 @@
 package com.scino.practice.polkilok.scino_books.model;
-
-/**
- * Created by Name on 10/08/15.
- */
 public class Book {
 
+	static private final char space = '\n';
 	private long id;
 	private String title;
 	private String author;
 	private String category;
+	private long category_id;
 	private boolean read;
-	private final char space = '\n';
 
 	public Book()
 	{
@@ -64,5 +61,13 @@ public class Book {
 
 	public void setRead(boolean read) {
 		this.read = read;
+	}
+
+	public long getCategory_id() {
+		return category_id;
+	}
+
+	public void setCategory_id(long category_id) {
+		this.category_id = category_id;
 	}
 }
